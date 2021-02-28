@@ -1,3 +1,11 @@
+This fork of Node-Red is a work in progress by the team at GeminosAI.  The goal of this fork and project is to extend both the GUI and programmatic aspects of Node-Red to support two new modeling pardigms using the familiar Node-Red block and wiring mechanism.  The two new areas are Graph modeling and specifically Graph modeling for the opensource GraphDB http://grakn.ai and to create an intergrated modeling tool for surfacing causality in a flow.  Based on the groundbreaking work of [Dr. Judea Pearl](http://bayes.cs.ucla.edu/jp_home.html) and documented in his papers and the book, ["The Book of Why"](https://www.amazon.com/dp/B075DCKP7V/ref=dp-kindle-redirect?_encoding=UTF8&btkr=1)
+
+If you have any interest in participating in this effort and work, please reach out to research@geminos.ai
+
+
+
+
+
 # Node-RED
 
 http://nodered.org
