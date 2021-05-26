@@ -179,6 +179,7 @@ module.exports = function(grunt) {
                     "packages/node_modules/@node-red/editor-client/src/js/ui/editor.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/editors/*.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/event-log.js",
+                    "packages/node_modules/@node-red/editor-client/src/js/ui/typeql.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/tray.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/clipboard.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/library.js",
