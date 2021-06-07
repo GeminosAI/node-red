@@ -26,6 +26,7 @@
         }
     ],
     "dependencies": {
+        "@node-red-contrib-themes/midnight-red": "^1.5.1",
         "acorn": "8.3.0",
         "acorn-walk": "8.1.0",
         "ajv": "6.12.6",
