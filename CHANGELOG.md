@@ -1,3 +1,186 @@
+#### 2.0.3: Maintenance Release
+
+Nodes
+
+ - HTML: Fix HTML parsing when body is included in the select tag Fixes #3079
+ - HTTP Request: Preserve case of user-provided http headers in request node Fixes #3081
+ - HTTP Request: Set decompress to false for HTTP Request to keep 1.x compatibility Fixes #3083
+ - HTTP Request: Add unit tests for HTTP Request encodeURI and error response
+ - HTTP Request: Do not throw HTTP errors in request node Fixes #3082
+ - HTTP Request: Ensure uri is properly encoded before passing to got module Fixes #3080
+
+#### 2.0.2: Maintenance Release
+
+Runtime
+
+ - Use file:// url with dynamic import
+ - Detect if agent-base has patched https.request and undo it Fixes #3072
+
+Editor
+
+ - Fix tab fade css because Safari Fixes #3073
+ - Fix error closing library dialog with monaco
+ - Handle other error types in Manage Palette view
+
+
+Nodes
+
+ - HTTP Request node - ignore invalid cookies rather than fail request Fixes #3075
+ - Fix msg.reset handling in Delay node Fixes #3074
+
+#### 2.0.1: Maintenance Release
+
+Nodes
+
+ - Function: Ensure default module export is exposed in Function node
+
+#### 2.0.0: Milestone Release
+
+**Migration from 1.x**
+
+ - Node-RED now requires Node.js 12.x or later.
+
+ - The following nodes have had significant dependency updates. Unless stated,
+   they should be fully backward compatible.
+
+   - RBE:  Relabelled as 'filter' to make it more discoverable and made part of
+     the core palette, rather than as a separate module.
+   - Tail: This node has been removed from the default palette. You can reinstall it
+     from node-red-node-tail
+   - HTTP Request: Reimplemented with a different underlying module. We have
+     tried to maintain 100% functional compatibility, but it is possible
+     some edge cases remain.
+   - JSON: The schema validation option no longer supports JSON-Schema draft-04
+   - HTML: Its underlying module has had a major version update. Should be fully
+     backward compatible.
+
+ - `functionExternalModules` is now enabled by default for new installs.
+   If you have an existing settings file that contains this setting, you will
+   need to set it to `true` yourself.
+
+   The external modules will now get installed in your Node-RED user directory,
+   (`~/.node-red`) rather than in a subdirectory. This means all dependencies will
+   be listed in your top-level `package.json`. If you have existing external modules,
+   they will get reinstalled to the new location when you first run Node-RED 2.0.
+
+
+Runtime
+
+ - Fix missing dependencies (#3052, #2057) @kazuhitoyokoi
+ - Ensure node.types is defined if node html file missing
+ - Fix reporting of type_already_registered error
+ - Move install location of external modules (#3064) @knolleary
+
+Editor
+
+ - Update translations (#3063) @kazuhitoyokoi
+ - Add a slight fade to tab labels that overflow
+ - Show config node details when selected in outliner
+ - Fix layout of info outliner for subflow entries
+
+Nodes
+
+ - Delay: let `msg.flush` specify how many messages to flush from node (#3059) @dceejay
+ - Function: external modules is now enabled by default (#3065) @knolleary
+ - Function: external modules now supports both ES6 and CJS modules (#3065) @knolleary
+ - WebSocket: add option for client node to send automatic pings (#3056) @knolleary
+
+
+##### 2.0.0-beta.2: Beta Release
+
+Runtime
+
+ - Add `node-red admin init` (via `node-red-admin@2.1.0`)
+ - Move to GH Actions rather than Travis for build (#3042) @knolleary
+
+Editor
+
+ - Include hasUser=false config nodes when exporting whole flow (#3048)
+ - Emit nodes:change for any updated config node when node deleted/added
+ - Fix padding of compact notification Closes #3045
+ - Ensure any html in changelog is escaped before displaying
+ - Add support for Map/Set property types on Debug (#3040) @knolleary
+ - Add 'theme' to default settings file
+ - Add RED.view.annotations api (#3032) @knolleary
+ - Update monaco editor to V0.25.2 (#3031) @Steve-Mcl
+ - Lower tray zIndex when overlay tray being opened Fixes #3019
+ - Reduce z-Index of Function expand buttons to prevent overlap Part of #3019
+ - Ensure RED.clipboard.import displays the right library Fixes #3021
+ - Batch messages sent over comms to prevent flooding (#3025) @knolleary
+ - Allow RED.popover.panel to specify a closeButton to ignore click events on
+ - Use browser default language for initial page load
+ - Add css var for node font color
+ - Fix label padding of toggleButton
+ - Give sidebar open tab a bit more room for its label
+ - Various Monaco updates (#3015) @Steve-Mcl
+ - Log readOnly on startup (#3024) @sammachin
+ - Translation updates (#3020 #3022) @HiroyasuNishiyama @kazuhitoyokoi
+
+Nodes
+
+ - HTTP Request: Fix proxy handling (#3044) @hardillb
+ - HTTP Request: Handle basic auth with @ in username (#3017) @hardillb
+ - Add Japanese translation for file-in node (#3037 #3039) @kazuhitoyokoi
+ - File In: Add option for file-in node to include all properties (default off) (#3035) @dceejay
+ - Exec: add windowsHide option to hide windows under Windows (#3026) @natcl
+ - Support loading external module sub path Fixes #3023
+
+##### 2.0.0-beta.1: Beta Release
+
+
+
+Runtime
+
+ - [MAJOR] Set minimum node version to 12.
+ - [MAJOR] Fix flowfile name to flows.json in settings (#2951) @dceejay
+ - [MAJOR] Update to latest i18n in editor and runtime (#2940) @knolleary
+ - [MAJOR] Deprecate usage of httpRoot (#2953) @knolleary
+ - Add pre/postInstall hooks to npm install handling (#2936) @knolleary
+ - Add engine-strict flag to npm install args (#2965) @nileio
+ - Restructure default settings.js to be more organised (#3012) @knolleary
+ - Ensure httpServerOptions gets applied to ALL the express apps
+ - Allow RED.settings.set to replace string property with object property
+ - Update debug tests to handle compact comms format
+ - Updates to encode/decode message when passed over debug comms link
+ - Remove all input event listeners on a node once it is closed
+ - Move hooks to util package
+ - Rework hooks structure to be a linkedlist
+ - Update dependencies (#2922) @knolleary
+
+Editor
+
+ - [MAJOR] Change node id generation to give fixed length values without '.' (#2987) @knolleary
+ - [MAJOR] Add Monaco code editor (#2971) @Steve-Mcl
+ - Update to latest Monaco (#3007) @Steve-Mcl
+ - Update Node-RED Function typings in Monaco (#3008) @Steve-Mcl
+ - Add css named variables for certain key colours (#2994) @knolleary
+ - Improve contrast of export dialog JSON font color
+ - Switch editableList buttons from <a> to <button> elements
+ - Add option to RED.nodes.createCompleteNodeSet to include node dimensions
+ - Fix css of node help table of contents elements
+ - Improve red-ui-node-icon css and add red-ui-node-icon-small modifier class
+ - Add RED.hooks to editor
+ - Add viewAddPort viewRemovePort viewAddNode viewRemoveNode hooks to view
+ - Use paletteLabel if set in help sidebar
+ - Add missing args from JSONata $now signature
+
+Nodes
+
+ - [MAJOR] Relabel RBE node as 'filter' and move into core. Also remove tail (#2944) @dceejay
+ - [MAJOR] HTTP Request: migrate to 'got' module (#2952) @knolleary
+ - [MAJOR] Move Inject node to CronosJS module (#2959) @knolleary
+ - [MAJOR] JSON: Update ajv to 8.2.0 - drop support for JSON-Schema draft-04 (#2969) @knolleary
+ - [MAJOR] HTML node: cheerio update to 1.x (#3011) @knolleary
+ - Join: change default manual mode to object (#2931) @knolleary
+ - File node: Add fileWorkingDirectory (#2932) @knolleary
+ - Delay node enhancements (#2294) @kazuhitoyokoi (#2949) @dceejay
+ - Add Japanese translations for delay node enhancements (#2958) @kazuhitoyokoi
+ - Inject node: reorder TypedInput options (#2961) @dceejay
+ - HTTP Request: update to work with proxies (#2983) @hardillb (#3009) @hardillb
+ - HTTP Request: fix msg.responseUrl (#2986) @hardillb
+ - TLS: Add ALPN support to TLS node (#2988) @hardillb
+ - Inject: add "Inject now" button to edit dialog (#2990) @Steve-Mcl
+
 ### 1.3.5 Maintenance Release
 
 Editor

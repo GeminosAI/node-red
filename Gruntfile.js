@@ -40,11 +40,10 @@ module.exports = function(grunt) {
     if (nonHeadless) {
         process.env.NODE_RED_NON_HEADLESS = true;
     }
-    let packageFile = grunt.file.readJSON('package.json')
-    process.env.NODE_RED_PACKAGE_VERSION = packageFile.version;
-
+    const pkg = grunt.file.readJSON('package.json');
+    process.env.NODE_RED_PACKAGE_VERSION = pkg.version;
     grunt.initConfig({
-        pkg: packageFile,
+        pkg: pkg,
         paths: {
             dist: ".dist"
         },
@@ -138,6 +137,7 @@ module.exports = function(grunt) {
                     "packages/node_modules/@node-red/editor-client/src/js/jquery-addons.js",
                     "packages/node_modules/@node-red/editor-client/src/js/red.js",
                     "packages/node_modules/@node-red/editor-client/src/js/events.js",
+                    "packages/node_modules/@node-red/editor-client/src/js/hooks.js",
                     "packages/node_modules/@node-red/editor-client/src/js/i18n.js",
                     "packages/node_modules/@node-red/editor-client/src/js/settings.js",
                     "packages/node_modules/@node-red/editor-client/src/js/user.js",
@@ -170,6 +170,7 @@ module.exports = function(grunt) {
                     "packages/node_modules/@node-red/editor-client/src/js/ui/workspaces.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/statusBar.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/view.js",
+                    "packages/node_modules/@node-red/editor-client/src/js/ui/view-annotations.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/view-navigator.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/view-tools.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/sidebar.js",
@@ -182,6 +183,7 @@ module.exports = function(grunt) {
                     "packages/node_modules/@node-red/editor-client/src/js/ui/palette-editor.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/editor.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/editors/*.js",
+                    "packages/node_modules/@node-red/editor-client/src/js/ui/editors/code-editors/*.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/event-log.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/tray.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/clipboard.js",
@@ -211,7 +213,9 @@ module.exports = function(grunt) {
                         "node_modules/marked/marked.min.js",
                         "node_modules/dompurify/dist/purify.min.js",
                         "packages/node_modules/@node-red/editor-client/src/vendor/d3/d3.v3.min.js",
-                        "packages/node_modules/@node-red/editor-client/src/vendor/i18next/i18next.min.js",
+                        "node_modules/i18next/i18next.min.js",
+                        "node_modules/i18next-http-backend/i18nextHttpBackend.min.js",
+                        "node_modules/jquery-i18next/jquery-i18next.min.js",
                         "node_modules/jsonata/jsonata-es5.min.js",
                         "packages/node_modules/@node-red/editor-client/src/vendor/jsonata/formatter.js",
                         "packages/node_modules/@node-red/editor-client/src/vendor/ace/ace.js",
@@ -284,7 +288,9 @@ module.exports = function(grunt) {
                     "packages/node_modules/@node-red/editor-client/public/index.html",
                     "packages/node_modules/@node-red/editor-client/public/favicon.ico",
                     "packages/node_modules/@node-red/editor-client/public/icons",
-                    "packages/node_modules/@node-red/editor-client/public/vendor"
+                    "packages/node_modules/@node-red/editor-client/public/vendor",
+                    "packages/node_modules/@node-red/editor-client/public/types/node",
+                    "packages/node_modules/@node-red/editor-client/public/types/node-red",
                 ]
             },
             release: {
@@ -374,10 +380,23 @@ module.exports = function(grunt) {
                         src: [
                             'ace/**',
                             'jquery/css/base/**',
-                            'font-awesome/**'
+                            'font-awesome/**',
+                            'monaco/dist/**',
+                            'monaco/types/extraLibs.js',
+                            'monaco/style.css',
+                            'monaco/monaco-bootstrap.js'
                         ],
                         expand: true,
                         dest: 'packages/node_modules/@node-red/editor-client/public/vendor/'
+                    },
+                    {
+                        cwd: 'packages/node_modules/@node-red/editor-client/src',
+                        src: [
+                            'types/node/*.ts',
+                            'types/node-red/*.ts',
+                        ],
+                        expand: true,
+                        dest: 'packages/node_modules/@node-red/editor-client/public/'
                     },
                     {
                         cwd: 'packages/node_modules/@node-red/editor-client/src/icons',

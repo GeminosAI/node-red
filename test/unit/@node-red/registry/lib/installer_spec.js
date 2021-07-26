@@ -25,7 +25,7 @@ var NR_TEST_UTILS = require("nr-test-utils");
 var installer = NR_TEST_UTILS.require("@node-red/registry/lib/installer");
 var registry = NR_TEST_UTILS.require("@node-red/registry/lib/index");
 var typeRegistry = NR_TEST_UTILS.require("@node-red/registry/lib/registry");
-const { events, exec, log } =  NR_TEST_UTILS.require("@node-red/util");
+const { events, exec, log, hooks } =  NR_TEST_UTILS.require("@node-red/util");
 
 describe('nodes/registry/installer', function() {
 
@@ -42,7 +42,7 @@ describe('nodes/registry/installer', function() {
     var execResponse;
 
     beforeEach(function() {
-        sinon.stub(exec,"run", () => execResponse || Promise.resolve(""))
+        sinon.stub(exec,"run").callsFake(() => execResponse || Promise.resolve(""))
         installer.init({})
     });
 
@@ -68,6 +68,7 @@ describe('nodes/registry/installer', function() {
             fs.statSync.restore();
         }
         exec.run.restore();
+        hooks.clear();
     });
 
     describe("installs module", function() {
@@ -118,7 +119,7 @@ describe('nodes/registry/installer', function() {
             var p = Promise.reject(res);
             p.catch((err)=>{});
             execResponse = p;
-            sinon.stub(typeRegistry,"getModuleInfo", function() {
+            sinon.stub(typeRegistry,"getModuleInfo").callsFake(function() {
                 return {
                     version: "0.1.1"
                 }
@@ -129,7 +130,7 @@ describe('nodes/registry/installer', function() {
             }).catch(done);
         });
         it("rejects when update requested to existing version", function(done) {
-            sinon.stub(typeRegistry,"getModuleInfo", function() {
+            sinon.stub(typeRegistry,"getModuleInfo").callsFake(function() {
                 return {
                     user: true,
                     version: "0.1.1"
@@ -141,7 +142,7 @@ describe('nodes/registry/installer', function() {
             }).catch(done);
         });
         it("rejects when update requested to existing version and url", function(done) {
-            sinon.stub(typeRegistry,"getModuleInfo", function() {
+            sinon.stub(typeRegistry,"getModuleInfo").callsFake(function() {
                 return {
                     user: true,
                     version: "0.1.1"
@@ -180,7 +181,7 @@ describe('nodes/registry/installer', function() {
             p.catch((err)=>{});
             execResponse = p;
 
-            var addModule = sinon.stub(registry,"addModule",function(md) {
+            var addModule = sinon.stub(registry,"addModule").callsFake(function(md) {
                 return Promise.resolve(nodeInfo);
             });
 
@@ -211,7 +212,7 @@ describe('nodes/registry/installer', function() {
         });
         it("succeeds when path is valid node-red module", function(done) {
             var nodeInfo = {nodes:{module:"foo",types:["a"]}};
-            var addModule = sinon.stub(registry,"addModule",function(md) {
+            var addModule = sinon.stub(registry,"addModule").callsFake(function(md) {
                 return Promise.resolve(nodeInfo);
             });
             var resourcesDir = path.resolve(path.join(__dirname,"resources","local","TestNodeModule","node_modules","TestNodeModule"));
@@ -241,12 +242,76 @@ describe('nodes/registry/installer', function() {
             p.catch((err)=>{});
             execResponse = p;
 
-            var addModule = sinon.stub(registry,"addModule",function(md) {
+            var addModule = sinon.stub(registry,"addModule").callsFake(function(md) {
                 return Promise.resolve(nodeInfo);
             });
 
             installer.installModule("this_wont_exist",null,"https://example/foo-0.1.1.tgz").then(function(info) {
                 info.should.eql(nodeInfo);
+                done();
+            }).catch(done);
+        });
+
+        it("triggers preInstall and postInstall hooks", function(done) {
+            let receivedPreEvent,receivedPostEvent;
+            hooks.add("preInstall", function(event) { event.args = ["a"]; receivedPreEvent = event; })
+            hooks.add("postInstall", function(event) { receivedPostEvent = event; })
+            var nodeInfo = {nodes:{module:"foo",types:["a"]}};
+            var res = {code: 0,stdout:"",stderr:""}
+            var p = Promise.resolve(res);
+            p.catch((err)=>{});
+            execResponse = p;
+
+            var addModule = sinon.stub(registry,"addModule").callsFake(function(md) {
+                return Promise.resolve(nodeInfo);
+            });
+
+            installer.installModule("this_wont_exist","1.2.3").then(function(info) {
+                exec.run.called.should.be.true();
+                exec.run.lastCall.args[1].should.eql([ 'install', 'a', 'this_wont_exist@1.2.3' ]);
+                info.should.eql(nodeInfo);
+                should.exist(receivedPreEvent)
+                receivedPreEvent.should.have.property("module","this_wont_exist")
+                receivedPreEvent.should.have.property("version","1.2.3")
+                receivedPreEvent.should.have.property("dir")
+                receivedPreEvent.should.have.property("url")
+                receivedPreEvent.should.have.property("isExisting")
+                receivedPreEvent.should.have.property("isUpgrade")
+                receivedPreEvent.should.eql(receivedPostEvent)
+                done();
+            }).catch(done);
+        });
+
+        it("fails install if preInstall hook fails", function(done) {
+            let receivedEvent;
+            hooks.add("preInstall", function(event) { throw new Error("preInstall-error"); })
+            var nodeInfo = {nodes:{module:"foo",types:["a"]}};
+
+            installer.installModule("this_wont_exist","1.2.3").catch(function(err) {
+                exec.run.called.should.be.false();
+                done();
+            }).catch(done);
+        });
+
+        it("skips invoking npm if preInstall returns false", function(done) {
+            let receivedEvent;
+            hooks.add("preInstall", function(event) { return false })
+            hooks.add("postInstall", function(event) { receivedEvent = event; })
+            var nodeInfo = {nodes:{module:"foo",types:["a"]}};
+
+            installer.installModule("this_wont_exist","1.2.3").catch(function(err) {
+                exec.run.called.should.be.false();
+                should.exist(receivedEvent);
+                done();
+            }).catch(done);
+        });
+
+        it("rollsback install if postInstall hook fails", function(done) {
+            hooks.add("postInstall", function(event) { throw new Error("fail"); })
+            installer.installModule("this_wont_exist","1.2.3").catch(function(err) {
+                exec.run.calledTwice.should.be.true();
+                exec.run.firstCall.args[1].includes("install").should.be.true();
+                exec.run.secondCall.args[1].includes("remove").should.be.true();
                 done();
             }).catch(done);
         });
@@ -267,7 +332,7 @@ describe('nodes/registry/installer', function() {
 
         it("rejects with generic error", function(done) {
             var nodeInfo = [{module:"foo",types:["a"]}];
-            var removeModule = sinon.stub(registry,"removeModule",function(md) {
+            var removeModule = sinon.stub(registry,"removeModule").callsFake(function(md) {
                 return Promise.resolve(nodeInfo);
             });
             var res = {
@@ -288,10 +353,10 @@ describe('nodes/registry/installer', function() {
         });
         it("succeeds when module is found", function(done) {
             var nodeInfo = [{module:"foo",types:["a"]}];
-            var removeModule = sinon.stub(typeRegistry,"removeModule",function(md) {
+            var removeModule = sinon.stub(typeRegistry,"removeModule").callsFake(function(md) {
                 return nodeInfo;
             });
-            var getModuleInfo = sinon.stub(registry,"getModuleInfo",function(md) {
+            var getModuleInfo = sinon.stub(registry,"getModuleInfo").callsFake(function(md) {
                 return {nodes:[]};
             });
             var res = {
@@ -303,7 +368,7 @@ describe('nodes/registry/installer', function() {
             p.catch((err)=>{});
             execResponse = p;
 
-            sinon.stub(fs,"statSync", function(fn) { return {}; });
+            sinon.stub(fs,"statSync").callsFake(function(fn) { return {}; });
 
             installer.uninstallModule("this_wont_exist").then(function(info) {
                 info.should.eql(nodeInfo);
