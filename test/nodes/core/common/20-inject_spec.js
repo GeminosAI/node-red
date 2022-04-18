@@ -106,6 +106,278 @@ describe('inject node', function() {
         });
     });
 
+    it('inject name of node as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_NODE_NAME", payloadType: "env", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "NAME");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject id of node as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_NODE_ID", payloadType: "env", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "n1");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject path of node as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_NODE_PATH", payloadType: "env", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "flow/n1");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+
+    it('inject name of flow as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_FLOW_NAME", payloadType: "env", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"},
+                    {id: "flow", type: "tab", label: "FLOW" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "FLOW");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject id of flow as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_FLOW_ID", payloadType: "env", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"},
+                    {id: "flow", type: "tab", name: "FLOW" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "flow");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject name of group as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_GROUP_NAME", payloadType: "env", wires: [["n2"]], z: "flow", g: "g0"},
+                    {id: "n2", type: "helper"},
+                    {id: "g0", type: "group", name: "GROUP" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "GROUP");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject id of group as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "NR_GROUP_ID", payloadType: "env", wires: [["n2"]], z: "flow", g: "g0"},
+                    {id: "n2", type: "helper"},
+                    {id: "g0", type: "group", name: "GROUP" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "g0");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+
+    it('inject name of node as environment variable by substitution ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_NODE_NAME}", payloadType: "str", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "NAME");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject id of node as environment variable by substitution ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_NODE_ID}", payloadType: "str", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "n1");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject path of node as environment variable by substitution ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_NODE_PATH}", payloadType: "str", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "flow/n1");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+
+    it('inject name of flow as environment variable by substitution ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_FLOW_NAME}", payloadType: "str", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"},
+                    {id: "flow", type: "tab", label: "FLOW" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "FLOW");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject id of flow as environment variable ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_FLOW_ID}", payloadType: "str", wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"},
+                    {id: "flow", type: "tab", name: "FLOW" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "flow");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject name of group as environment variable by substitution ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_GROUP_NAME}", payloadType: "str", wires: [["n2"]], z: "flow", g: "g0"},
+                    {id: "n2", type: "helper"},
+                    {id: "g0", type: "group", name: "GROUP" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "GROUP");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+    it('inject id of group as environment variable by substitution ', function (done) {
+        var flow = [{id: "n1", type: "inject", name: "NAME", topnic: "t1", payload: "${NR_GROUP_ID}", payloadType: "str", wires: [["n2"]], z: "flow", g: "g0"},
+                    {id: "n2", type: "helper"},
+                    {id: "g0", type: "group", name: "GROUP" },
+                   ];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.have.property("payload", "g0");
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
+
     it('sets the value of flow context property', function (done) {
         var flow = [{id: "n1", type: "inject", topic: "t1", payload: "flowValue", payloadType: "flow", wires: [["n2"]], z: "flow"},
                     {id: "n2", type: "helper"}];
@@ -148,6 +420,7 @@ describe('inject node', function() {
             });
         });
     });
+
 
     it('sets the value of two persistable flow context property', function (done) {
         var flow = [{id: "n0", z: "flow", type: "inject", topic: "t0", payload: "#:(memory0)::val", payloadType: "flow", wires: [["n2"]]},
@@ -510,6 +783,36 @@ describe('inject node', function() {
         });
     });
 
+    
+    it('should inject custom properties in message', function (done) {
+        //n1: inject node with  { topic:"static", payload:"static", bool1:true, str1:"1" }
+        var flow = [{id: "n1", type: "inject", props: [{p:"payload", v:"static", vt:"str"}, {p:"topic", v:"static", vt:"str"}, {p:"bool1", v:"true", vt:"bool"}, {p:"str1", v:"1", vt:"str"}], wires: [["n2"]], z: "flow"},
+                    {id: "n2", type: "helper"}];
+        helper.load(injectNode, flow, function () {
+            var n1 = helper.getNode("n1");
+            var n2 = helper.getNode("n2");
+            n2.on("input", function (msg) {
+                try {
+                    msg.should.not.have.property("payload"); //payload removed
+                    msg.should.have.property("topic", "t_override"); //changed value to t_override
+                    msg.should.have.property("str1", 1);//changed type from str to num
+                    msg.should.have.property("num1", 1);//new prop
+                    msg.should.have.property("bool1", false);//changed value to false
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({ __user_inject_props__: [
+                {p:"topic", v:"t_override", vt:"str"}, //change value to t_override
+                {p:"str1", v:"1", vt:"num"}, //change type
+                {p:"num1", v:"1", vt:"num"}, //new prop
+                {p:"bool1", v:"false", vt:"bool"}, //change value to false
+            ]});
+        });
+    });
+
+
     it('should inject multiple properties using legacy props if needed', function (done) {
         var flow = [{id: "n1", type: "inject", payload:"123", payloadType:"num", topic:"foo", props: [{p:"topic", vt:"str"}, {p:"payload"}], wires: [["n2"]], z: "flow"},
                     {id: "n2", type: "helper"}];
@@ -590,6 +893,46 @@ describe('inject node', function() {
                                  done(err);
                              }
                          });
+        });
+
+        it('should inject custom properties in posted message', function(done) {
+            var flow = [{id:"n1", type:"inject", payloadType:"str", topic: "t4",payload:"hello", wires:[["n4"]] },
+                        { id:"n4", type:"helper"}];
+            helper.load(injectNode, flow, function() {
+                var n4 = helper.getNode("n4");
+                n4.on("input", function(msg) {
+                    msg.should.not.have.property("payload"); //payload removed
+                    msg.should.have.property("topic", "t_override"); //changed value to t_override
+                    msg.should.have.property("str1", "1"); //injected prop
+                    msg.should.have.property("num1", 1); //injected prop
+                    msg.should.have.property("bool1", true); //injected prop
+
+                    helper.clearFlows().then(function() {
+                        done();
+                    });
+                });
+                try {
+                    helper.request()
+                    .post('/inject/n1')
+                    .send({ __user_inject_props__: [
+                        {p:"topic", v:"t_override", vt:"str"}, //change value to t_override
+                        {p:"str1", v:"1", vt:"str"}, //new prop
+                        {p:"num1", v:"1", vt:"num"}, //new prop
+                        {p:"bool1", v:"true", vt:"bool"}, //new prop
+                    ]})
+                    .expect(200).end(function(err) {
+                        if (err) {
+                            console.log(err);
+                            return helper.clearFlows()
+                            .then(function () {
+                                done(err);
+                            });
+                        }
+                    });
+                } catch(err) {
+                    done(err);
+                }
+            });
         });
 
         it('should fail for invalid node', function(done) {

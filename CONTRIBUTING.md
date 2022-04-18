@@ -38,13 +38,18 @@ If you want to raise a pull-request with a new feature, or a refactoring
 of existing code, it may well get rejected if you haven't discussed it on
 the [forum](https://discourse.nodered.org) first.
 
-All contributors need to sign the JS Foundation's Contributor License Agreement.
-It is an online process and quick to do. You can read the details of the agreement
-here: https://cla.js.foundation/node-red/node-red.
+All contributors need to sign the OpenJS Foundation's Contributor License Agreement.
+It is an online process and quick to do. If you raise a pull-request without
+having signed the CLA, you will be prompted to do so automatically.
 
-If you raise a pull-request without having signed the CLA, you will be prompted
-to do so automatically.
 
+### Code Branches
+
+When raising a PR for a fix or a new feature, it is important to target the right branch.
+
+ - `master` - this is the main branch for the latest stable release of Node-RED. All bug fixes for that release should target this branch.
+ - `v1.x` - this is the maintenance branch for the 1.x stream. If a fix *only* applies to 1.x, then it should target this branch. If it applies to the current stable release as well, target `master` first. We will then decide if it needs to be back ported to the 1.x stream.
+ - `dev` - this is the branch for new feature development targeting the next milestone release.
 
 ### Coding standards
 
