@@ -79,7 +79,7 @@
         "semver": "7.3.7",
         "tar": "6.1.11",
         "tough-cookie": "4.0.0",
-        "typedb-client": "^2.9.0",
+        "typedb-client": "^2.11.1",
         "uglify-js": "3.16.3",
         "updates": "^13.1.7",
         "upgrade": "^1.1.0",
