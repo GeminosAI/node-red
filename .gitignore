@@ -29,3 +29,4 @@ docs
 sync.ffs_db
 .dockerignore
 Dockerfile
+microservice-latency

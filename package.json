@@ -67,6 +67,7 @@
         "mustache": "4.2.0",
         "node-red-admin": "^3.0.0",
         "node-red-geminos": "file:../geminos-palette",
+        "node-red-node-sqlite": "^1.0.3",
         "node-watch": "0.7.3",
         "nopt": "5.0.0",
         "oauth2orize": "1.11.1",
