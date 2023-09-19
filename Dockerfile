@@ -7,5 +7,6 @@ WORKDIR /causeway
 COPY . .
 RUN npm install
 RUN npm install ./geminos-palette
+RUN npm run-script build
 EXPOSE 1880
 CMD [ "node", "./packages/node_modules/node-red/red.js" ]
