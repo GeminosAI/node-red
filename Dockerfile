@@ -3,9 +3,9 @@ FROM --platform=linux/arm64 node:alpine
 RUN apk update && apk upgrade
 RUN apk add nodejs
 RUN apk --no-cache add git
-WORKDIR /causeway
+WORKDIR /causeway/frontend
 COPY ./ .
-WORKDIR /causeway/node-red
+WORKDIR /causeway/frontend/node-red
 COPY package*.json .
 RUN npm install
 COPY . .
