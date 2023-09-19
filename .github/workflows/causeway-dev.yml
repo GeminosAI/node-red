@@ -34,4 +34,4 @@ jobs:
       - 
         name: build from DOCKERFILE
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 --file Dockerfile --tag causewaygui:1.3.1.0  --load .
+          docker buildx build --load --platform linux/amd64,linux/arm64 --file Dockerfile --tag causewaygui:1.3.1.0 .
