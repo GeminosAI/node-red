@@ -24,21 +24,6 @@ jobs:
         run: |
           git submodule init
           git submodule update
-      # - 
-      #   name: RUN ENV
-      #   id : runenv
-      #   run: |
-      #     env
-      #     echo "Harbor fliite password is " 
-      #     echo "$HARBORPWD"
-      #     echo "pwd=$HARBORPWD" >> "$GITHUB_OUTPUT"
-      # - 
-      #   name: Docker Login to HARBOR.FLIITE.SYSTEMS
-      #   uses: docker/login-action@v3.0.0
-      #   with:
-      #     registry: http://harbor.fliite.systems
-      #     username: yash
-      #     password: ${{ steps.runenv.outputs.pwd }}
     
       - 
         name: Docker Setup QEMU
