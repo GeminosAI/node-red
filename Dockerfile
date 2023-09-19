@@ -4,7 +4,7 @@ RUN apk update && apk upgrade
 RUN apk add nodejs
 RUN apk --no-cache add git
 WORKDIR /causeway
-COPY ./ .
+COPY . .
 RUN npm install
 RUN npm install ./geminos-palette
 EXPOSE 1880
