@@ -13,7 +13,8 @@ jobs:
         uses: actions/checkout@v4.0.0
         with:
           ref: causeway-dev-1.3.1.0
-          submodules: recursive
+          ssh-key: ${{ secrets.GEMINOS_PALETTE_PULL_KEY }}
+          submodules: 'recursive'
       # - 
       #   name: RUN ENV
       #   id : runenv
