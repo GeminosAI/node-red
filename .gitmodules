@@ -1,0 +1,4 @@
+[submodule "geminos-palette"]
+	path = geminos-palette
+	url = https://github.com/GeminosAI/geminos-palette.git
+	branch = [dev]
