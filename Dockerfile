@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM --platform=linux/arm64 node:alpine
+FROM node:alpine
 RUN apk update && apk upgrade
 RUN apk add nodejs
 RUN apk --no-cache add git
