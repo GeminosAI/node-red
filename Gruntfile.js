@@ -19,7 +19,6 @@ var fs = require("fs-extra");
 var sass = require("sass");
 
 module.exports = function (grunt) {
-
     var nodemonArgs = ["-V"];
     var flowFile = grunt.option('flowFile');
     if (flowFile) {
