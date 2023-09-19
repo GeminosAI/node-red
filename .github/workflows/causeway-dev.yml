@@ -13,7 +13,6 @@ jobs:
         id : runenv
         run: |
           env
-          echo "Harbor fliite password is " $HARBORPWD
           echo "pwd=$HARBORPWD" >> "$GITHUB_OUTPUT"
 
   build-gui:
@@ -23,9 +22,6 @@ jobs:
       matrix:
         node-version: [18]
     steps:
-      - env:
-          PWD: ${{ needs.get-harbor-pwd.outputs.pwd }}
-        run: echo "pwd is " $PWD
       - 
         name: Docker Login to HARBOR.FLIITE.SYSTEMS
         uses: docker/login-action@v3.0.0
@@ -58,4 +54,4 @@ jobs:
       - 
         name: build from DOCKERFILE
         run: |
-          docker buildx build --push --platform linux/amd64,linux/arm64 --file Dockerfile --tag causewaygui:1.3.1.0 .
+          docker buildx build --push --platform linux/amd64,linux/arm64 --file Dockerfile --tag harbor.fliite.systems/geminos/causewaygui:1.3.1.0 .
