@@ -34,6 +34,7 @@ jobs:
           path: geminos-palette
           ssh-key: ${{ secrets.GEMINOS_PALETTE_PULL_KEY }}
           persist-credentials: 'true'
+          ref: dev
       - name: checkout submodule
         run: |
           git submodule init
