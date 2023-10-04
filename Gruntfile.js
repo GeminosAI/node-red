@@ -39,6 +39,7 @@ module.exports = function (grunt) {
     if (nonHeadless) {
         process.env.NODE_RED_NON_HEADLESS = true;
     }
+
     const pkg = grunt.file.readJSON('package.json');
     process.env.NODE_RED_PACKAGE_VERSION = pkg.version;
     grunt.initConfig({
@@ -589,6 +590,8 @@ module.exports = function (grunt) {
                 });
             };
         }
+        console.log("OPTIONS")
+        console.log(options)
         callback(nodemon(options));
     });
 
