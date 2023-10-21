@@ -39,7 +39,6 @@ module.exports = function (grunt) {
     if (nonHeadless) {
         process.env.NODE_RED_NON_HEADLESS = true;
     }
-
     const pkg = grunt.file.readJSON('package.json');
     process.env.NODE_RED_PACKAGE_VERSION = pkg.version;
     grunt.initConfig({
@@ -612,6 +611,7 @@ module.exports = function (grunt) {
             " **/\n";
 
         if (files) {
+            grunt.log.writeln("Files " +files)
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 if (!grunt.file.exists(file)) {

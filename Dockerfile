@@ -3,7 +3,6 @@ FROM node:alpine
 RUN apk update && apk upgrade
 RUN apk add nodejs
 RUN apk --no-cache add git
-RUN ls
 WORKDIR /causeway
 COPY . .
 RUN ls
