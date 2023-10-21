@@ -619,16 +619,14 @@ module.exports = function (grunt) {
                     return false;
                 } else {
                     var content = grunt.file.read(file);
-                    if (context) {
-                        if (content.indexOf(copyright) == -1) {
-                            content = copyright + content;
-                            if (!grunt.file.write(file, content)) {
-                                return false;
-                            }
-                            grunt.log.writeln("Attached copyright to " + file);
-                        } else {
-                            grunt.log.writeln("Copyright already on " + file);
+                    if (content.indexOf(copyright) == -1) {
+                        content = copyright + content;
+                        if (!grunt.file.write(file, content)) {
+                            return false;
                         }
+                        grunt.log.writeln("Attached copyright to " + file);
+                    } else {
+                        grunt.log.writeln("Copyright already on " + file);
                     }
                 }
             }
@@ -710,7 +708,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build',
         'Builds editor content',
-        ['clean:build', 'jsonlint', 'concat:build', 'concat:vendor', 'copy:build', 'uglify:build', 'sass:build', 'attachCopyright']);
+        ['clean:build', 'jsonlint', 'concat:build', 'concat:vendor', 'copy:build', 'uglify:build', 'sass:build']);
+
+        // ['clean:build', 'jsonlint', 'concat:build', 'concat:vendor', 'copy:build', 'uglify:build', 'sass:build', 'attachCopyright']);
 
     grunt.registerTask('build-dev',
         'Developer mode: build dev version',
