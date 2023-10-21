@@ -590,8 +590,6 @@ module.exports = function (grunt) {
                 });
             };
         }
-        console.log("OPTIONS")
-        console.log(options)
         callback(nodemon(options));
     });
 
