@@ -708,9 +708,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build',
         'Builds editor content',
-        ['clean:build', 'jsonlint', 'concat:build', 'concat:vendor', 'copy:build', 'uglify:build', 'sass:build']);
-
-        // ['clean:build', 'jsonlint', 'concat:build', 'concat:vendor', 'copy:build', 'uglify:build', 'sass:build', 'attachCopyright']);
+        ['clean:build', 'jsonlint', 'concat:build', 'concat:vendor', 'copy:build', 'uglify:build', 'sass:build', 'attachCopyright']);
 
     grunt.registerTask('build-dev',
         'Developer mode: build dev version',
