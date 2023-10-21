@@ -14,7 +14,6 @@ jobs:
         run: |
           env
           echo "pwd=$HARBORPWD" >> "$GITHUB_OUTPUT"
-
   build-gui:
     runs-on: self-hosted
     needs: get-harbor-pwd
