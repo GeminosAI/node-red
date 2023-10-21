@@ -611,7 +611,7 @@ module.exports = function (grunt) {
             " **/\n";
 
         if (files) {
-            grunt.log.writeln("Files " +files)
+            grunt.log.writeln("Files " + files)
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 if (!grunt.file.exists(file)) {
@@ -619,14 +619,16 @@ module.exports = function (grunt) {
                     return false;
                 } else {
                     var content = grunt.file.read(file);
-                    if (content.indexOf(copyright) == -1) {
-                        content = copyright + content;
-                        if (!grunt.file.write(file, content)) {
-                            return false;
+                    if (context) {
+                        if (content.indexOf(copyright) == -1) {
+                            content = copyright + content;
+                            if (!grunt.file.write(file, content)) {
+                                return false;
+                            }
+                            grunt.log.writeln("Attached copyright to " + file);
+                        } else {
+                            grunt.log.writeln("Copyright already on " + file);
                         }
-                        grunt.log.writeln("Attached copyright to " + file);
-                    } else {
-                        grunt.log.writeln("Copyright already on " + file);
                     }
                 }
             }
