@@ -209,6 +209,7 @@ module.exports = function (grunt) {
                     "packages/node_modules/@node-red/editor-client/src/js/ui/touch/radialMenu.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/tour/*.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/causeway.js",
+                    "packages/node_modules/@node-red/editor-client/src/js/ui/causewayReact.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/submodel.js",
                     "packages/node_modules/@node-red/editor-client/src/js/ui/typeql.js",
                 ],
@@ -353,7 +354,6 @@ module.exports = function (grunt) {
                 tasks: ['copy:build']
             }
         },
-
         nodemon: {
             /* uses .nodemonignore */
             dev: {
@@ -368,7 +368,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-
         concurrent: {
             dev: {
                 tasks: ['nodemon', 'watch'],
@@ -377,7 +376,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-
         copy: {
             build: {
                 files: [
