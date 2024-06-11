@@ -353,7 +353,6 @@ module.exports = function (grunt) {
                 tasks: ['copy:build']
             }
         },
-
         nodemon: {
             /* uses .nodemonignore */
             dev: {
@@ -368,7 +367,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-
         concurrent: {
             dev: {
                 tasks: ['nodemon', 'watch'],
@@ -377,7 +375,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-
         copy: {
             build: {
                 files: [

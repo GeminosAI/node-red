@@ -26,6 +26,7 @@
         }
     ],
     "dependencies": {
+        "@flowfuse/node-red-dashboard": "^1.7.1",
         "acorn": "8.8.2",
         "acorn-walk": "8.2.0",
         "ajv": "8.12.0",
@@ -78,6 +79,8 @@
         "passport-http-bearer": "1.0.1",
         "passport-oauth2-client-password": "0.1.2",
         "raw-body": "2.5.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "semver": "7.5.4",
         "tar": "6.1.13",
         "tough-cookie": "4.1.3",
