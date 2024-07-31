@@ -68,7 +68,7 @@
         "multer": "1.4.5-lts.1",
         "mustache": "4.2.0",
         "node-red-admin": "^3.1.0",
-        "node-red-geminos": "github:GeminosAI/geminos-palette#cwy-1314-style-regcoeffs",
+        "node-red-geminos": "file:../../geminos-palette",
         "node-watch": "0.7.4",
         "nopt": "5.0.0",
         "oauth2orize": "1.11.1",
