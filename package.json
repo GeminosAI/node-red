@@ -58,6 +58,7 @@
         "json-stringify-safe": "5.0.1",
         "jsonata": "1.8.6",
         "license-keygen-next": "github:GeminosAI/license-keygen-next",
+        "llamaindex": "^0.5.14",
         "lodash.clonedeep": "^4.5.0",
         "media-typer": "1.1.0",
         "memorystore": "1.6.7",
